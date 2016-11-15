@@ -37,7 +37,10 @@ var doCmd = &cobra.Command{
         fmt.Printf("error: %v\n", err)
       }
 
-      for _, host := range result {
+			fmt.Printf("Scanner: %s\nArgs: %s\nStart: %s\nVersion: %s\n", result.Scanner, result.Args, result.StartStr, result.Version)
+			fmt.Printf("Verbosity: %d\nDebugging Level: %d\n", result.Verbose.Level, result.Debugging.Level)
+
+      for _, host := range result.Hosts {
         if len(host.Ports) > 0 {
           fmt.Printf("----------------------\n")
           fmt.Printf("%s\n", host.Address.Addr)

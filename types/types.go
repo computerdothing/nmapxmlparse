@@ -12,15 +12,16 @@ type NmapRun struct {
   StartStr string `xml:"startstr,attr"`
   Version string `xml:"version,attr"`
   XmlOutputVersion string `xml:"outputversion,attr"`
-  ScanInfo NmapScanInfo `xml:"nmaprun>scaninfo"`
-  Verbose VerbosityLevel `xml:"nmaprun>verbose"`
-  Debugging DebuggingLevel `xml:"nmaprun>debugging"`
-  Hosts []Host `xml:"nmaprun>host"`
+  ScanInfo NmapScanInfo `xml:"scaninfo"`
+  Verbose VerbosityLevel `xml:"verbose"`
+  Debugging DebuggingLevel `xml:"debugging"`
+  Hosts []Host `xml:"host"`
 }
 /////////////////////
 
 //// NMAPSCANINFO ////
 type NmapScanInfo struct {
+  XMLName xml.Name `xml:"scaninfo"`
   ScanType string `xml:"type,attr"`
   Protocol string `xml:"protocol,attr"`
   NumServices int `xml:"numservices,attr"`
@@ -30,12 +31,14 @@ type NmapScanInfo struct {
 
 //// VERBOSITYLEVEL ////
 type VerbosityLevel struct {
+  XMLName xml.Name `xml:"verbose"`
   Level int `xml:"level,attr"`
 }
 ////////////////////////
 
 //// DEBUGGINGLEVEL ////
 type DebuggingLevel struct {
+  XMLName xml.Name `xml:"debugging"`
   Level int `xml:"level,attr"`
 }
 ////////////////////////
