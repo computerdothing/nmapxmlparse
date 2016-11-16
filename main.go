@@ -41,7 +41,7 @@ var csvCmd = &cobra.Command{
 			fmt.Printf("error: %v\n", err)
 		}
 
-		if err := output.CsvOut(result, args[1]); err != nil {
+		if err := output.CsvOut(result, args[1], altout); err != nil {
 			fmt.Printf("error: %v\n", err)
 		}
 	},
@@ -79,7 +79,10 @@ var doCmd = &cobra.Command{
   },
 }
 
+var altout bool
+
 func init() {
+	csvCmd.Flags().BoolVarP(&altout, "alternate-output", "a", false, "Do the alternate formatting of the CSV file")
   rootCmd.AddCommand(versionCmd)
   rootCmd.AddCommand(doCmd)
 	rootCmd.AddCommand(csvCmd)
