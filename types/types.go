@@ -4,6 +4,7 @@ import (
   //"net"
   "encoding/xml"
 )
+
 //// SCANRESULTS ////
 type NmapRun struct {
   Scanner string `xml:"scanner,attr"`
@@ -56,106 +57,35 @@ type Host struct {
 //////////////
 
 //// STATUS ////
-/*
-type HostState int
-
-const (
-  HostDown HostState = 0
-  HostUp HostState = 1
-)
-
-type HostStateReason int
-
-const (
-  EchoReply HostStateReason = 0
-)
-*/
-
 type Status struct {
-  //State HostState `xml:"state,attr"`
   State string `xml:"state,attr"`
-  //Reason HostStateReason `xml:"reason,attr"`
   Reason string `xml:"reason,attr"`
   ReasonTtl int `xml:"reason_ttl,attr"`
 }
 ////////////////
 
 //// ADDRESS ////
-/*
-type AddressType int
-
-const (
-  TypeIPV4 AddressType = 0
-  TypeIPV6 AddressType = 1
-)
-*/
-
 type Address struct {
-  //Addr net.IP `xml:"addr,attr"`
   Addr string `xml:"addr,attr"`
-  //Addrtype AddressType `xml:"addrtype,attr"`
   Addrtype string `xml:"addrtype,attr"`
 }
 /////////////////
 
 //// HOSTNAMES ////
-/*
-type HostnameType int
-
-const (
-  PTR HostnameType = 0
-)
-*/
-
 type Hostname struct {
   XMLName xml.Name `xml:"hostname"`
   Name string `xml:"name,attr"`
-  //HNType HostnameType `xml:"type,attr"`
   HNType string `xml:"type,attr"`
 }
 ///////////////////
 
 //// PORTS ////
-/*
-type Protocol int
-
-const (
-    Tcp Protocol = 0
-    Udp Protocol = 1
-)
-
-type PortStateState int
-
-const (
-  PortOpen PortStateState = 0
-  PortClosed PortStateState = 1
-  PortFiltered PortStateState = 2
-)
-
-type PortStateReason int
-
-const (
-  SynAck PortStateReason = 0
-  NoResponse PortStateReason = 1
-)
-*/
-
 type PortState struct {
   XMLName xml.Name `xml:"state"`
-  //State PortStateState  `xml:"state,attr"`
   State string `xml:"state,attr"`
-  //Reason PortStateReason `xml:"reason,attr"`
   Reason string `xml:"reason,attr"`
   ReasonTtl int `xml:"reason_ttl,attr"`
 }
-
-/*
-type ServiceMethod int
-
-const (
-  Probed ServiceMethod = 0
-)
-*/
 
 type Service struct {
   XMLName xml.Name `xml:"service"`
@@ -163,7 +93,10 @@ type Service struct {
   ServiceFP string `xml:"servicefp,attr"`
   Product string `xml:"product,attr"`
   Version string `xml:"version,attr"`
-  //Method ServiceMethod `xml:"method,attr"`
+  Extrainfo string `xml:extrainfo,attr`
+  Hostname string `xml:hostname,attr`
+  OsType string `xml:ostype,attr`
+  Tunnel string `xml:tunnel,attr`
   Method string `xml:"method,attr"`
   Conf int `xml:"conf,attr"`
 }
@@ -176,22 +109,6 @@ type Port struct {
   Service Service `xml:"service"`
   Cpe string `xml:"cpe"`
 }
-
-/*
-type XtraPorts struct {
-  XMLName xml.Name `xml:"extraports"`
-  //State PortStateState `xml:"state,attr"`
-  State string `xml:"state,attr"`
-  Count int `xml:"count,attr"`
-}
-
-type Ports struct {
-  XMLName xml.Name `xml:"ports"`
-  ExtraPorts XtraPorts `xml:"extraports"`
-  Ports []Port `xml:"ports>port"`
-}
-*/
-
 ///////////////
 
 //// TIMES ////
