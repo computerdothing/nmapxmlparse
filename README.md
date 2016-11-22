@@ -1,5 +1,5 @@
 # Usage:
-nmapxmlparse csv <nmap-xml-input-filename> <csv-output-filename>
+nmapxmlparse csv *nmap-xml-input-filename* *csv-output-filename*
 
 # About:
 I didn't like the options I found when looking for something to convert *nmap* XML output to CSV so I made this thing.
