@@ -2,15 +2,16 @@ package main
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
-  "nmapxmlparse/xmlimport"
 	"nmapxmlparse/output"
+	"nmapxmlparse/xmlimport"
 	"os"
+
+	"github.com/spf13/cobra"
 )
 
 const (
 	swVersion = "0.0.0"
-  // xmloutputversion = "1.04"
+	// xmloutputversion = "1.04"
 )
 
 var versionCmd = &cobra.Command{
@@ -28,9 +29,9 @@ var rootCmd = &cobra.Command{
 }
 
 var csvCmd = &cobra.Command{
-	Use: "csv",
+	Use:   "csv",
 	Short: "Usage: nmapxmlparse csv <nmap-xml-input-filename> <csv-output-filename>",
-	Long: "Attempts to convert NMap XML data from input file to CSV and write that to outfile",
+	Long:  "Attempts to convert NMap XML data from input file to CSV and write that to outfile",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) != 2 {
 			fmt.Println("Usage: nmapxmlparse csv <nmap-xml-input-filename> <csv-output-filename>")
@@ -48,43 +49,44 @@ var csvCmd = &cobra.Command{
 }
 
 var doCmd = &cobra.Command{
-  Use: "do",
-  Short: "Do default action",
-  Run: func(cmd *cobra.Command, args []string) {
-    for _, arg := range args {
-      result, err := xmlimport.ImportXmlFile(arg)
+	Use:   "do",
+	Short: "Usage: nmapxmlparse do <nmap-xml-input-filename>",
+	Long:  "Currently, just converts the Nmap XML data in the into a really ugly and possibly less useful output format and prints it",
+	Run: func(cmd *cobra.Command, args []string) {
+		for _, arg := range args {
+			result, err := xmlimport.ImportXmlFile(arg)
 
-      if err != nil {
-        fmt.Printf("error: %v\n", err)
-      }
+			if err != nil {
+				fmt.Printf("error: %v\n", err)
+			}
 
 			fmt.Printf("Scanner: %s\nArgs: %s\nStart: %s\nVersion: %s\n", result.Scanner, result.Args, result.StartStr, result.Version)
 			fmt.Printf("Verbosity: %d\nDebugging Level: %d\n", result.Verbose.Level, result.Debugging.Level)
 
-      for _, host := range result.Hosts {
-        if len(host.Ports) > 0 {
-          fmt.Printf("----------------------\n")
-          fmt.Printf("%s\n", host.Address.Addr)
+			for _, host := range result.Hosts {
+				if len(host.Ports) > 0 {
+					fmt.Printf("----------------------\n")
+					fmt.Printf("%s\n", host.Address.Addr)
 
-          for _, hostname := range host.Hostnames {
-            fmt.Printf("\t%s  -  %s  -  %s\n", hostname.Name, hostname.HNType, host.Status.State)
-          }
+					for _, hostname := range host.Hostnames {
+						fmt.Printf("\t%s  -  %s  -  %s\n", hostname.Name, hostname.HNType, host.Status.State)
+					}
 
-          for _, port := range host.Ports {
-            fmt.Printf("\t\t%d  -  %s  -  %s  -  %s  -  %s\n", port.Portid, port.State.State, port.Service.Name, port.Service.Product, port.Service.Version)
-          }
-        }
-      }
-    }
-  },
+					for _, port := range host.Ports {
+						fmt.Printf("\t\t%d  -  %s  -  %s  -  %s  -  %s\n", port.Portid, port.State.State, port.Service.Name, port.Service.Product, port.Service.Version)
+					}
+				}
+			}
+		}
+	},
 }
 
 var altout bool
 
 func init() {
 	csvCmd.Flags().BoolVarP(&altout, "alternate-output", "a", false, "Do the alternate formatting of the CSV file")
-  rootCmd.AddCommand(versionCmd)
-  rootCmd.AddCommand(doCmd)
+	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(doCmd)
 	rootCmd.AddCommand(csvCmd)
 }
 
