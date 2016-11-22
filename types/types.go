@@ -1,10 +1,5 @@
 package types
 
-import (
-	//"net"
-	"encoding/xml"
-)
-
 //// SCANRESULTS ////
 type NmapRun struct {
 	Scanner          string         `xml:"scanner,attr"`
@@ -23,7 +18,6 @@ type NmapRun struct {
 
 //// NMAPSCANINFO ////
 type NmapScanInfo struct {
-	XMLName     xml.Name `xml:"scaninfo"`
 	ScanType    string   `xml:"type,attr"`
 	Protocol    string   `xml:"protocol,attr"`
 	NumServices int      `xml:"numservices,attr"`
@@ -34,7 +28,6 @@ type NmapScanInfo struct {
 
 //// VERBOSITYLEVEL ////
 type VerbosityLevel struct {
-	XMLName xml.Name `xml:"verbose"`
 	Level   int      `xml:"level,attr"`
 }
 
@@ -42,7 +35,6 @@ type VerbosityLevel struct {
 
 //// DEBUGGINGLEVEL ////
 type DebuggingLevel struct {
-	XMLName xml.Name `xml:"debugging"`
 	Level   int      `xml:"level,attr"`
 }
 
@@ -56,16 +48,22 @@ type Host struct {
 	Address       Address       `xml:"address"`
 	Hostnames     []Hostname    `xml:"hostnames>hostname"`
 	Ports         []Port        `xml:"ports>port"`
-	Os            Os            `xml:os`
-	Uptime        Uptime        `xml:uptime`
-	Distance      int           `xml:distance>value,attr`
-	Tcpsequence   Tcpsequence   `xml:tcpsequence`
-	IpIdSequence  IpIdSequence  `xml:ipidsequence`
-	TcpTsSequence TcpTsSequence `xml:tcptssequence`
+	Os            Os            `xml:"os"`
+	Uptime        Uptime        `xml:"uptime"`
+	Distance      Distance      `xml:"distance"`
+	Tcpsequence   Tcpsequence   `xml:"tcpsequence"`
+	IpIdSequence  IpIdSequence  `xml:"ipidsequence"`
+	TcpTsSequence TcpTsSequence `xml:"tcptssequence"`
 	Times         Times         `xml:"times"`
 }
 
 //////////////
+
+//// DISTANCE ////
+type Distance struct {
+	Value int `xml:"value,attr"`
+}
+//////////////////
 
 //// STATUS ////
 type Status struct {
@@ -86,7 +84,6 @@ type Address struct {
 
 //// HOSTNAMES ////
 type Hostname struct {
-	XMLName xml.Name `xml:"hostname"`
 	Name    string   `xml:"name,attr"`
 	HNType  string   `xml:"type,attr"`
 }
@@ -95,14 +92,12 @@ type Hostname struct {
 
 //// PORTS ////
 type PortState struct {
-	XMLName   xml.Name `xml:"state"`
 	State     string   `xml:"state,attr"`
 	Reason    string   `xml:"reason,attr"`
 	ReasonTtl int      `xml:"reason_ttl,attr"`
 }
 
 type Service struct {
-	XMLName   xml.Name `xml:"service"`
 	Name      string   `xml:"name,attr"`
 	ServiceFP string   `xml:"servicefp,attr"`
 	Product   string   `xml:"product,attr"`
@@ -116,7 +111,6 @@ type Service struct {
 }
 
 type Port struct {
-	XMLName  xml.Name  `xml:"port"`
 	Protocol string    `xml:"protocol,attr"`
 	Portid   int       `xml:"portid,attr"`
 	State    PortState `xml:"state"`
@@ -128,7 +122,6 @@ type Port struct {
 
 //// OSCLASS ////
 type OsClass struct {
-	XMLName  xml.Name `xml:"osclass"`
 	Type     string   `xml:"type,attr"`
 	Vendor   string   `xml:"vendor,attr"`
 	OsFamily string   `xml:"osfamily,attr"`
@@ -140,7 +133,6 @@ type OsClass struct {
 
 //// OSMATCH ////
 type OsMatch struct {
-	XMLName  xml.Name `xml:"osmatch"`
 	Name     string   `xml:"name,attr"`
 	Accuracy int      `xml:"accuracy,attr"`
 	Line     int      `xml:"line,attr"`
@@ -152,7 +144,6 @@ type OsMatch struct {
 
 //// OS ////
 type Os struct {
-	XMLName  xml.Name `xml:"os"`
 	PortUsed []Port   `xml:"portused"`
 	OsMatch  OsMatch  `xml:"osmatch"`
 }
@@ -161,7 +152,6 @@ type Os struct {
 
 //// UPTIME ////
 type Uptime struct {
-	XMLName  xml.Name `xml:"uptime"`
 	Seconds  int      `xml:"seconds,attr"`
 	Lastboot string   `xml:"lastboot,attr"`
 }
@@ -170,7 +160,6 @@ type Uptime struct {
 
 //// TCPSEQUENCE ////
 type Tcpsequence struct {
-	XMLName    xml.Name `xml:"tcpsequence"`
 	Index      int      `xml:"index,attr"`
 	Difficulty string   `xml:"difficulty,attr"`
 	Values     string   `xml:"values,attr"`
@@ -180,7 +169,6 @@ type Tcpsequence struct {
 
 //// IPIDSEQUENCE ////
 type IpIdSequence struct {
-	XMLName xml.Name `xml:"ipidsequence"`
 	Class   string   `xml:"class,attr"`
 	Values  string   `xml:"values,attr"`
 }
@@ -189,7 +177,6 @@ type IpIdSequence struct {
 
 //// TCPTSSEQUENCE ////
 type TcpTsSequence struct {
-	XMLName xml.Name `xml:"tcptssequence"`
 	Class   string   `xml:"class,attr"`
 	Values  string   `xml:"values,attr"`
 }
@@ -198,7 +185,6 @@ type TcpTsSequence struct {
 
 //// TIMES ////
 type Times struct {
-	XMLName xml.Name `xml:"times"`
 	Srtt    int      `xml:"srtt,attr"`
 	Rttvar  int      `xml:"rttvar,attr"`
 	To      int      `xml:"to,attr"`

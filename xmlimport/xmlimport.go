@@ -1,7 +1,7 @@
 package xmlimport
 
 import (
-    "bytes"
+    //"bytes"
     "encoding/xml"
     "io/ioutil"
     "nmapxmlparse/types"
@@ -17,6 +17,7 @@ func ImportXmlFile(filename string) (types.NmapRun, error) {
     return result, err
   }
 
+  /*
   d := xml.NewDecoder(bytes.NewReader(data))
 
   for {
@@ -31,6 +32,12 @@ func ImportXmlFile(filename string) (types.NmapRun, error) {
           d.DecodeElement(&result, &startElement)
         }
     }
+  }
+  */
+
+  err = xml.Unmarshal(data, &result)
+  if err != nil {
+    return result, err
   }
 
   return result, nil

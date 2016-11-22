@@ -56,6 +56,15 @@ func PrepareCsv(data types.NmapRun, altout bool) [][]string {
 			hostnames += singleHN
 		}
 
+		if len(host.Ports) == 0 {
+			var tmp []string
+			tmp = append(tmp, host.Address.Addr, strconv.Itoa(host.Starttime), strconv.Itoa(host.Endtime),
+				host.Status.State, host.Status.Reason, hostnames, host.Os.OsMatch.Name, strconv.Itoa(host.Os.OsMatch.Accuracy),
+				host.Os.OsMatch.OsClass.Type, host.Os.OsMatch.OsClass.Vendor, host.Os.OsMatch.OsClass.OsFamily,
+				host.Os.OsMatch.OsClass.OsGen, host.Uptime.Lastboot, "", "", "", "", "", "", "", "", "", "", "", "", "",)
+				result = append(result, tmp)
+		}
+
 		for i, port := range host.Ports {
 			var thisRow []string
 			if altout && (i != 0) {

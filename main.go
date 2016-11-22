@@ -35,15 +35,18 @@ var csvCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) != 2 {
 			fmt.Println("Usage: nmapxmlparse csv <nmap-xml-input-filename> <csv-output-filename>")
+			return
 		}
 
 		result, err := xmlimport.ImportXmlFile(args[0])
 		if err != nil {
 			fmt.Printf("error: %v\n", err)
+			return
 		}
 
 		if err := output.CsvOut(result, args[1], altout); err != nil {
 			fmt.Printf("error: %v\n", err)
+			return
 		}
 	},
 }
@@ -62,6 +65,8 @@ var doCmd = &cobra.Command{
 
 			fmt.Printf("Scanner: %s\nArgs: %s\nStart: %s\nVersion: %s\n", result.Scanner, result.Args, result.StartStr, result.Version)
 			fmt.Printf("Verbosity: %d\nDebugging Level: %d\n", result.Verbose.Level, result.Debugging.Level)
+
+			fmt.Println(result)
 
 			for _, host := range result.Hosts {
 				if len(host.Ports) > 0 {
