@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
+	"github.com/spf13/cobra"
 	"nmapxmlparse/output"
+	"nmapxmlparse/types"
 	"nmapxmlparse/xmlimport"
 	"os"
-
-	"github.com/spf13/cobra"
+	"strconv"
+	"strings"
 )
 
 const (
@@ -44,6 +46,21 @@ var csvCmd = &cobra.Command{
 			return
 		}
 
+		var filters []types.HostFilter
+
+		if openPorts {
+			filters = append(filters, types.AnyOpenPort())
+		}
+
+		if specificPortsStr != "" {
+			filters = append(filters, types.SelectOpenPorts(processSpecficPortsStr(specificPortsStr)...))
+		}
+
+		if err := result.Filter(filters...); err != nil {
+			fmt.Printf("error: %v\n", err)
+			return
+		}
+
 		if err := output.CsvOut(result, args[1], altout); err != nil {
 			fmt.Printf("error: %v\n", err)
 			return
@@ -51,10 +68,29 @@ var csvCmd = &cobra.Command{
 	},
 }
 
-var altout bool
+var (
+	altout bool
+	openPorts bool
+	specificPortsStr string
+)
+
+func processSpecficPortsStr(pStr string) []int {
+	var rv []int
+	for _, s := range strings.Split(pStr, ",") {
+		i, err := strconv.Atoi(s)
+		if err != nil {
+			fmt.Printf("error: %v\n", err)
+			return nil
+		}
+		rv = append(rv, i)
+	}
+	return rv
+}
 
 func init() {
-	csvCmd.Flags().BoolVarP(&altout, "alternate-output", "a", false, "Do the alternate formatting of the CSV file")
+	csvCmd.Flags().BoolVarP(&altout, "alternate-output", "a", false, "Do the alternate formatting of the CSV file.")
+	rootCmd.PersistentFlags().BoolVarP(&openPorts, "open-hosts", "O", false, "Only show results for hosts with open ports.")
+	rootCmd.PersistentFlags().StringVarP(&specificPortsStr, "specific-ports", "o", "", "Olny show results for hosts with specific open ports. (Comma separated list)")
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(csvCmd)
 }

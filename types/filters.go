@@ -8,7 +8,7 @@ type HostFilter interface {
 	Pass(*Host) bool
 }
 
-func (nmr NmapRun) Filter(filters ...HostFilter) error {
+func (nmr *NmapRun) Filter(filters ...HostFilter) error {
 	var finalForm []Host
 
 	for _, h := range nmr.Hosts {
